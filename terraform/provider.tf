@@ -1,4 +1,13 @@
 terraform {
+
+    cloud { 
+    
+    organization = "self_k8s_portal" 
+
+    workspaces { 
+      name = "k8s-dev" 
+    } 
+  } 
   required_providers {
     kubernetes = {
       source  = "hashicorp/kubernetes"
