@@ -1,0 +1,5 @@
+flask
+flask-cors
+kubernetes
+python-dotenv
+psycopg2-binary

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kubernetes Self-Service Portal</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<div class="orb2"></div>
+
+<header>
+  <div class="logo-row">
+    <div class="logo-icon">⎈</div>
+    <h1>K8s Self-Service Portal</h1>
+  </div>
+  <p class="subtitle">Resource Provisioning Console</p>
+</header>
+
+<!-- LOGIN CARD -->
+<div class="card" id="loginCard">
+  <div class="card-header">
+    <span class="card-title">User Login</span>
+  </div>
+
+  <!-- Username -->
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter your username" />
+  </div>
+
+  <!-- Password -->
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter your password" />
+  </div>
+
+  <button id="loginBtn" style="margin-top:16px;width:100%;">Login</button>
+</div>
+
+<!-- MAIN PORTAL (Hidden Until Login) -->
+<div id="mainPortal" style="display:none;">
+
+  <div class="status-bar">
+    <div class="status-pill"><span class="dot"></span>Cluster: prod-us-east-1</div>
+    <div class="status-pill"><span class="dot"></span>API Server: healthy</div>
+    <div class="status-pill"><span class="dot"></span>v1.29.2</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Create Resource</span>
+      <span class="resource-badge" id="resourceBadge">SELECT TYPE</span>
+    </div>
+
+    <div class="form-group">
+      <label for="resourceType">Resource Type</label>
+      <div class="select-wrap">
+        <select id="resourceType">
+          <option value="">— choose a resource —</option>
+          <option value="namespace">Namespace</option>
+          <option value="deployment">Deployment</option>
+          <option value="service">Service</option>
+          <option value="configmap">ConfigMap</option>
+          <option value="secret">Secret</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="fields-container" id="fieldsContainer"></div>
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <span class="kbd-hint" id="kbdHint" style="display:none;margin-top:14px;">
+      Press <kbd>⌘</kbd><kbd>↵</kbd> to submit
+    </span>
+  </div>
+
+  <div class="activity-section">
+    <p class="section-label">Recent Activity</p>
+    <div class="activity-list" id="activityList">
+      <div class="activity-item" style="justify-content:center;color:var(--muted);font-size:.75rem;">
+        No activity yet
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

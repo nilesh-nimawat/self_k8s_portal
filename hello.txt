@@ -1,0 +1,4 @@
+('user_a', 'passA', 'namespace'),
+('user_b', 'passB', 'services'),
+('user_c', 'passC', 'deployment'),
+('user_d', 'passD', 'config_secret');
