@@ -1,0 +1,11 @@
+# Python
+backend/__pycache__
+
+.venv/
+
+
+#terraform 
+
+terraform/.terraform
+terraform/terraform.tfstate
+terraform/*tfstate.backup
