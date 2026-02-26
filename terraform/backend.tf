@@ -26,14 +26,14 @@ resource "kubernetes_deployment" "backend" {
       spec {
         service_account_name = kubernetes_service_account.admin_a.metadata[0].name
         container {
-          image = "nileshnimawat/self-k8s-backend:1.3" 
+          image = "nileshnimawat/self-k8s-backend:1.4" 
           name  = "flask-app"
           image_pull_policy = "Always"
           port {
             container_port = 5000 
           }
-        }
-      }
+        } 
+      } 
     }
   }
 }

@@ -1,23 +1,35 @@
 from kubernetes import client, config
 from kubernetes.client.exceptions import ApiException
 import logging
+import base64
 
 logger = logging.getLogger(__name__)
-
-# ---------------- CONFIG LOADING ---------------- #
-
-try:
-    config.load_incluster_config()
-except:
-    config.load_kube_config()
-
-core_v1 = client.CoreV1Api()
-apps_v1 = client.AppsV1Api()
+logging.basicConfig(level=logging.INFO)
 
 
-# ---------------- NAMESPACE ---------------- #
+def load_k8s_config():
+    try:
+        config.load_incluster_config()
+        logger.info("Loaded in-cluster config")
+    except:
+        config.load_kube_config()
+        logger.info("Loaded local kubeconfig")
+
+
+def get_core_api():
+    load_k8s_config()
+    return client.CoreV1Api()
+
+
+def get_apps_api():
+    load_k8s_config()
+    return client.AppsV1Api()
+
+
 
 def create_namespace_logic(namespace):
+    core_v1 = get_core_api()
+
     try:
         core_v1.read_namespace(namespace)
         return {"message": f"Namespace '{namespace}' already exists"}, 409
@@ -34,9 +46,11 @@ def create_namespace_logic(namespace):
         return {"error": str(e)}, 500
 
 
-# ---------------- SERVICE ---------------- #
+
 
 def create_service_logic(namespace, name, port, target_port, label, service_type):
+    core_v1 = get_core_api()
+
     try:
         core_v1.read_namespaced_service(name, namespace)
         return {"message": "Service already exists"}, 409
@@ -64,10 +78,12 @@ def create_service_logic(namespace, name, port, target_port, label, service_type
         return {"error": str(e)}, 500
 
 
-# ---------------- DEPLOYMENT ---------------- #
+
 
 def create_deployment_logic(namespace, name, container_name,
                             image, replicas, label, port):
+
+    apps_v1 = get_apps_api()
 
     try:
         apps_v1.read_namespaced_deployment(name, namespace)
@@ -113,9 +129,10 @@ def create_deployment_logic(namespace, name, container_name,
         return {"error": str(e)}, 500
 
 
-# ---------------- CONFIGMAP ---------------- #
 
 def create_configmap_logic(namespace, name, key, value):
+    core_v1 = get_core_api()
+
     try:
         core_v1.read_namespaced_config_map(name, namespace)
         return {"message": "ConfigMap already exists"}, 409
@@ -134,19 +151,22 @@ def create_configmap_logic(namespace, name, key, value):
         return {"error": str(e)}, 500
 
 
-# ---------------- SECRET ---------------- #
+
 
 def create_secret_logic(namespace, name, key, value):
+    core_v1 = get_core_api()
+
     try:
         core_v1.read_namespaced_secret(name, namespace)
         return {"message": "Secret already exists"}, 409
 
     except ApiException as e:
         if e.status == 404:
+            encoded_value = base64.b64encode(value.encode()).decode()
+
             body = client.V1Secret(
                 metadata=client.V1ObjectMeta(name=name),
-                type="Opaque",
-                string_data={key: value}
+                data={key: encoded_value}
             )
 
             core_v1.create_namespaced_secret(namespace, body)

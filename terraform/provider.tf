@@ -2,7 +2,7 @@ terraform {
 
     cloud { 
     
-    organization = "self_k8s_portal" 
+    organization = "self_k8s_portal_personal" 
 
     workspaces { 
       name = "k8s-dev" 
