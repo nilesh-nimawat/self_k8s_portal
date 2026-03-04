@@ -1,5 +1,6 @@
 # Python
-backend/__pycache__
+app/backend/__pycache__
+app/backend/.env
 
 .venv/
 
@@ -9,3 +10,5 @@ backend/__pycache__
 terraform/.terraform
 terraform/terraform.tfstate
 terraform/*tfstate.backup
+terraform/certs
+terraform/backup.tfstate

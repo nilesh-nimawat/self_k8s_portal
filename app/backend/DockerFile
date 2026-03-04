@@ -8,6 +8,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+ENV DB_HOST=postgres
+ENV DB_USER=admin
+ENV DB_PORT=5432
+ENV DB_PASSWORD=admin123
+ENV DB_DATABASE=mydb 
+
+
 EXPOSE 5000
 
 CMD ["python", "app.py"]

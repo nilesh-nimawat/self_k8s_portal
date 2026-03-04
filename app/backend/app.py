@@ -9,6 +9,8 @@ from k8s import (
     create_configmap_logic,
     create_secret_logic
 )
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, origins=["http://nilesh.appperfect.com"])
