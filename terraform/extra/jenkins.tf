@@ -3,5 +3,6 @@ resource "helm_release" "jenkins" {
   repository = "https://charts.jenkins.io"
   chart      = "jenkins"
   namespace = kubernetes_namespace.jenkins.metadata[0].name
-
+  timeout = 900
+  atomic  = true
 }
